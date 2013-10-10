@@ -18,9 +18,13 @@
     return none
 
 */
+function bfs(adjacency_lists, start){
+
+};
+
 
 
 conn = new Mongo();
 db = conn.getDB("tvdb");
-db.actors.find({name : "test"});
-
+query = db.actors.find({name : "test"}, {data: true});
+bfs(query["data"], "1"); // 1 should be Kevin Bacon later
