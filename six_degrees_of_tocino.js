@@ -18,9 +18,22 @@
     return none
 
 */
+var Set = function() {}
+Set.prototype.add = function(o) { this[o] = true; }
+Set.prototype.remove = function(o) { delete this[o]; }
+Set.prototype.has = function(o) {return (o in this);}
 
 
-conn = new Mongo();
-db = conn.getDB("tvdb");
-db.actors.find({name : "test"});
+function bfs(adjacency_lists, start){
+	var queue = [];
+	var set = new Set();
 
+};
+
+
+
+var conn = new Mongo();
+var db = conn.getDB("tvdb");
+var query = db.actors.find({name : "test"}, {data: true});
+var bacon = query["data"].filter(function(x) { return x["name"]== "1"; })[0]; // 1 should be Kevin Bacon
+bfs(query["data"], bacon);
