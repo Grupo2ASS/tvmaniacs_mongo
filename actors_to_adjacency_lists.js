@@ -4,4 +4,4 @@ function printResult(r){
 
 conn = new Mongo();
 db = conn.getDB("tvdb");
-db.actors.find().forEach();
+db.actors.find().forEach(printResult);
