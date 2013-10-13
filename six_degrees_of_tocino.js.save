@@ -37,6 +37,7 @@ function bfs(graph, bacon){
 		current_actor = queue.shift();
 		printjson(current_actor);
 		var next_actor;
+		print(current_actor)
 		for (var i = 0; i < current_actor["list"].length; i++) {
 			next_actor = graph.filter(function(o){
 				return o["name"]==current_actor["list"][i];
@@ -47,7 +48,7 @@ function bfs(graph, bacon){
 			printjson(visited);
 			print("queue:");
 			printjson(queue);
-			print(visited.has(next_actor["name"]));
+			print(visited.has(next_actor));
 			if(!visited.has(next_actor["name"])){
 				visited.add(next_actor["name"]);
 				next_actor["degree"] = current_actor["degree"] + 1;
