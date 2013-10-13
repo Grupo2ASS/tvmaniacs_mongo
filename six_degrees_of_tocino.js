@@ -51,7 +51,7 @@ function bfs(graph, bacon){
 			if(!visited.has(next_actor["name"])){
 				visited.add(next_actor["name"]);
 				next_actor["degree"] = current_actor["degree"] + 1;
-				queue.push(nextActor);
+				queue.push(next_actor);
 			}
 		};
 
