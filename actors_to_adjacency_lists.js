@@ -3,7 +3,8 @@ function printResult(r){
 };
 
 conn = new Mongo();
-db = conn.getDB("tvdb");//actors = db.actors.find();
+db = conn.getDB("tvdb");
+//actors = db.actors.find();
 var c = db.series.find( {}, { _id: 0, cast: 1 } );
 var series_cast = c.toArray();
 //print(series_cast[1]);
