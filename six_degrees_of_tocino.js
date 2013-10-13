@@ -35,42 +35,43 @@ function bfs(graph, bacon){
 	visited.add(bacon["name"]);
 	while(queue.length > 0){
 		current_actor = queue.shift();
-//		printjson(current_actor);
+		//print("current actor is: ");
+		//printjson(current_actor);
 		var next_actor;
 		for (var i = 0; i < current_actor["list"].length; i++) {
 			next_actor = graph.filter(function(o){
 				return o["name"]==current_actor["list"][i];
 			})[0];
-//			print("next actor is: ");
-//			printjson(next_actor);
-//			print("visited: ");
-//			printjson(visited);
-//			print("queue:");
-//			printjson(queue);
-//			print(visited.has(next_actor["name"]));
+		//	print("next actor is: ");
+		//	printjson(next_actor);
 			if(!visited.has(next_actor["name"])){
+				print("visited");
 				visited.add(next_actor["name"]);
 				next_actor["degree"] = current_actor["degree"] + 1;
+				db.adjacency_lists.update( { "name": next_actor["name"] },
+                 {
+                   $set: { "degree": next_actor["degree"] },
+                 } );
 				queue.push(next_actor);
-			}
+		//		print("queue");
+		//		printjson(queue);
+			}/*else{
+				print("not visited");
+			}*/
 		};
 
 	}
-	/*
-	print("graph is:");
-	printjson(graph);
-	print("bacon is:");
-	printjson(bacon);
-	*/
+
 };
 
 
 //initializers
 var conn = new Mongo();
 var db = conn.getDB("tvdb");
-var query = db.adjacency_lists.find({name : "test"});
-var graph;
-query.forEach(function(o){graph = o["data"]});
+var query = db.adjacency_lists.find();
+var graph = new Array();
+query.forEach(function(o){graph.push(o)});
 var bacon = graph.filter(function(x) { return x["name"]== "1"; })[0]; // 1 should be Kevin Bacon
+//printjson(bacon);
 bfs(graph, bacon);
 
