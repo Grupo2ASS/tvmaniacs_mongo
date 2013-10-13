@@ -7,7 +7,7 @@ db = conn.getDB("tvdb");
 //actors = db.actors.find();
 var c = db.series.find( {}, { _id: 0, cast: 1 } );
 var series_cast = c.toArray();
-print(series_cast[1]);
+//print(series_cast[1]);
 
 
 
