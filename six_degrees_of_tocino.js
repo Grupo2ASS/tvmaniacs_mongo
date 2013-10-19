@@ -45,7 +45,7 @@ function bfs(graph, bacon){
 		//	print("next actor is: ");
 		//	printjson(next_actor);
 			if(!visited.has(next_actor["name"])){
-				print("visited");
+		//		print("visited");
 				visited.add(next_actor["name"]);
 				next_actor["degree"] = current_actor["degree"] + 1;
 				db.adjacency_lists.update( { "name": next_actor["name"] },
