@@ -8,18 +8,20 @@ var query = db.series.find( {}, { _id: 0, cast: 1 } );
 var array = new Array();
 query.forEach(function(o){array.push(o)});
 
-var bacon = array.filter(function(x) { return x["name"]== "Madeleine Stowe"; })[0];
-print("aca: "+bacon);
-
-
+//**************************BEST APPROACH CON AGGREGATION**************************
 /*
-var series_cast = c.toArray();
-var a = tojson(series_cast[1]);
-print(a);
-print("algo: "+a.cast[0].name);
+var ser = db.series.aggregate( { $unwind : "$series" },
+                     { $unwind : "$series.cast" },
+                     { $group  : { _id  : "$_id",
+                                   cast : {$push:"$series.cast"}
+                                 }
+                     }
+);
 */
 
 
+//**************************BEST APPROACH CON MAP REDUCE**************************
+/*
 map = function() {
   for(var i in this.cast){
     key = { cast: this.cast[i] };
@@ -29,18 +31,40 @@ map = function() {
 }
 
 reduce = function(key, values) {
-  actor_list = { actors: [] };
-  for(var i in values) {
-    actor_list.series = values[i].series.concat(actor_list.actors);
-  }
-  return actor_list;
+  
 }
 
  printjson(db.series.mapReduce(map, reduce, { out: "test"}));
  db.test.find().forEach(printjson);
 
 
+*/
+//**************************APPROACH DE EDU**************************
+/*
+var series;
+var actors;
+db.actors.find().forEach(function(a){
+ actors = [];
+ series = db.series.find({"name": { $in: //array de nombres de series del actor// }});
+ series.forEach(function(s){
+   //agregar a actors a todos menos al mismo actor **IMPORTANTE**
 
+ });
+ //filtrar repetidos en actors
+ //agregar a collection adjacency lists la entrada correspondiente
 
+});
+*/
+//**************************OTRAS PRUEBAS**************************
+
+//var bacon = array.filter(function(x) { return x["name"]== "Madeleine Stowe"; })[0];
+//print("aca: "+bacon);
+
+/*
+var series_cast = c.toArray();
+var a = tojson(series_cast[1]);
+print(a);
+print("algo: "+a.cast[0].name);
+*/
 
 
