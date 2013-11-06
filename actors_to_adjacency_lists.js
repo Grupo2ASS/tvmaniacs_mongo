@@ -4,19 +4,67 @@ function printResult(r){
 
 conn = new Mongo();
 db = conn.getDB("mydb");
-var query = db.series.find( {}, { _id: 0, cast: 1 } );
-var array = new Array();
-query.forEach(function(o){array.push(o)});
+
+var series;
+var actors;
+var adj_list = db.adjacency_lists.find();
+var x;
+
+db.actors.find().forEach(function(a){
+ var jsonCollection = [];
+ // var currentActorFullName = JSON.stringify(a.first_name+" "+a.last_name);
+ // var currentActorImdbId = JSON.stringify(a.imdb_id);
+ // var seriesPerActor = JSON.stringify(a.series);
+ //print("name          lkdsnlkfndslk  "+seriesPerActor);
+ 
+ series = db.series.find({"imdb_id": {$in: a.series }});
+ series.forEach(function(s){
+ var actorExists;
+ //print(s.cast);
+ var currentActorImdbID = db.adjacency_lists.find({ name: a.imdb_id }).count();
+ //print(currentActorImdbID);
+ if(currentActorImdbID==0){ actorExists = false; }
+ if(currentActorImdbID==1){ actorExists = true; }
+ 
+ //print(tojson(s));
+ if(actorExists==false){
+  //jsonCollection.push({ name: a.imdb_id, list: s.cast, degree: 0});
+  //print(s.name);
+  x = { name: a.imdb_id, list: s.cast, degree: 0};
+  db.adjacency_lists.insert(x);
+ }
+ if(actorExists==true){
+  //print(s.name);
+  var id = db.adjacency_lists.find({ name : a.imdb_id },{ _id : 1 });
+  db.adjacency_lists.update({ _id : id }, { $set: { list: s.cast } });
+ }
+   //agregar a actors a todos menos al mismo actor **IMPORTANTE**
+
+ });
+
+});
+
+
+
 
 //**************************BEST APPROACH CON AGGREGATION**************************
 /*
-var ser = db.series.aggregate( { $unwind : "$series" },
-                     { $unwind : "$series.cast" },
-                     { $group  : { _id  : "$_id",
-                                   cast : {$push:"$series.cast"}
-                                 }
-                     }
+jsonCollection.forEach(printjson);
+
+var opcion1 = db.series.aggregate(
+    { $unwind : "$cast" },
+    { $group  : { _id  : "$_id",
+                  cast : { $push : "$cast.name" }
+                }
+    }
+    
 );
+
+// printjson(opcion1);
+// var numSeries = JSON.stringify(opcion1.result.length);
+// var res = JSON.stringify(opcion1.result[0].cast[0]);
+// print(res);
+
 */
 
 
