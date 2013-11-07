@@ -1,49 +1,49 @@
-function printResult(r){
-  print(tojson(r));
-};
+//checkList check that there are not repeated values and there is not the current actor.
+function checkList(list,currentActorId){
+  var finalList=[];
+  for(var i=0;i<list.length;i++){
+    var a = list.indexOf(list[i]);
+    //print(a+" i "+i); 
+    if(a==i && list[i]!=currentActorId){
+      finalList.push(list[i]);
+    }
+  }
+  return finalList;
+}
 
 conn = new Mongo();
 db = conn.getDB("mydb");
 
 var series;
-var actors;
 var adj_list = db.adjacency_lists.find();
 var x;
-
+//var i = 0; 
 db.actors.find().forEach(function(a){
- var jsonCollection = [];
- // var currentActorFullName = JSON.stringify(a.first_name+" "+a.last_name);
- // var currentActorImdbId = JSON.stringify(a.imdb_id);
- // var seriesPerActor = JSON.stringify(a.series);
- //print("name          lkdsnlkfndslk  "+seriesPerActor);
- 
+ var sList = []; //i++; print("actor"+i); var j = 0; 
+ var currentActorId = a.imdb_id;
  series = db.series.find({"imdb_id": {$in: a.series }});
  series.forEach(function(s){
- var actorExists;
- //print(s.cast);
- var currentActorImdbID = db.adjacency_lists.find({ name: a.imdb_id }).count();
- //print(currentActorImdbID);
- if(currentActorImdbID==0){ actorExists = false; }
- if(currentActorImdbID==1){ actorExists = true; }
+ //j++; print("serie"+j);
+ for(var l=0; l<s.cast.length; l++){
+  sList.push(s.cast[l]); 
+ }
+ var actorExists = db.adjacency_lists.find({ name: a.imdb_id }).count();
  
- //print(tojson(s));
- if(actorExists==false){
-  //jsonCollection.push({ name: a.imdb_id, list: s.cast, degree: 0});
-  //print(s.name);
-  x = { name: a.imdb_id, list: s.cast, degree: 0};
+ if(actorExists==0){
+  var checkedList = checkList(sList , currentActorId); 
+  x = { name: a.imdb_id, list: checkedList, degree: 0};
   db.adjacency_lists.insert(x);
  }
- if(actorExists==true){
-  //print(s.name);
-  var id = db.adjacency_lists.find({ name : a.imdb_id },{ _id : 1 });
-  db.adjacency_lists.update({ _id : id }, { $set: { list: s.cast } });
+ if(actorExists==1){
+  db.adjacency_lists.find({ name : a.imdb_id },{ _id : 1 }).forEach(function(a){
+    var checkedList = checkList(sList , currentActorId); 
+    db.adjacency_lists.update({ _id : a._id }, { $set: { list: checkedList } });
+  });
  }
-   //agregar a actors a todos menos al mismo actor **IMPORTANTE**
 
  });
 
 });
-
 
 
 
