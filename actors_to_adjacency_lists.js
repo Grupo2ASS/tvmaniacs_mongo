@@ -12,7 +12,7 @@ function checkList(list,currentActorId){
 }
 
 conn = new Mongo();
-db = conn.getDB("mydb");
+db = conn.getDB("tvdb");
 
 var series;
 var adj_list = db.adjacency_lists.find();

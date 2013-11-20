@@ -71,7 +71,7 @@ var db = conn.getDB("tvdb");
 var query = db.adjacency_lists.find();
 var graph = new Array();
 query.forEach(function(o){graph.push(o)});
-var bacon = graph.filter(function(x) { return x["name"]== "1"; })[0]; // 1 should be Kevin Bacon
+var bacon = graph.filter(function(x) { return x["name"]== "Kevin Bacon"; })[0]; // 1 should be Kevin Bacon
 //printjson(bacon);
 bfs(graph, bacon);
 
