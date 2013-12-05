@@ -5,4 +5,4 @@ load('six_degrees_of_tocino.js');
 print("Listo six_degrees_of_tocino");
 
 load('update_actors.js');
-print("Listo actor.js");
+print("Listo update de actors");

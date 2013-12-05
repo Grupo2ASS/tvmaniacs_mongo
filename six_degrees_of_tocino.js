@@ -44,8 +44,14 @@ function bfs(graph, bacon){
 			})[0];
 		//	print("next actor is: ");
 		//	printjson(next_actor);
+
+			//probando: q no sea null
+			if(next_actor!=null)
+			{	
+			//print(next_actor["name"]);
+			
 			if(!visited.has(next_actor["name"])){
-		//		print("visited");
+			//	print("visited");
 				visited.add(next_actor["name"]);
 				next_actor["degree"] = current_actor["degree"] + 1;
 				db.adjacency_lists.update( { "name": next_actor["name"] },
@@ -55,6 +61,7 @@ function bfs(graph, bacon){
 				queue.push(next_actor);
 		//		print("queue");
 		//		printjson(queue);
+			}
 			}/*else{
 				print("not visited");
 			}*/
@@ -71,7 +78,7 @@ var db = conn.getDB("tvdb");
 var query = db.adjacency_lists.find();
 var graph = new Array();
 query.forEach(function(o){graph.push(o)});
-var bacon = graph.filter(function(x) { return x["name"]== "0000102"; })[0]; //0000102 es el imdb_id de Kevin Bacon 1 should be Kevin Bacon
+var bacon = graph.filter(function(x) { return x["name"]== "4263213"; })[0]; //0000102 es el imdb_id de Kevin Bacon 1 should be Kevin Bacon
 //printjson(bacon);
 bfs(graph, bacon);
 
