@@ -91,7 +91,7 @@ var db = conn.getDB("tvdb");
 var query = db.adjacency_lists.find();
 var graph = new Array();
 query.forEach(function(o){graph.push(o)});
-var bacon = graph.filter(function(x) { return x["name"]== "2179180"; })[0]; //0000102 es el imdb_id de Kevin Bacon 1 should be Kevin Bacon
+var bacon = graph.filter(function(x) { return x["name"]== "0000102"; })[0]; //0000102 es el imdb_id de Kevin Bacon 1 should be Kevin Bacon
 //printjson(bacon);
 bfs(graph, bacon);
 
