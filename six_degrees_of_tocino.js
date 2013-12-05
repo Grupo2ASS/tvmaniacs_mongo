@@ -51,15 +51,16 @@ function bfs(graph, bacon){
 		//	print("next actor is: ");
 		//	printjson(next_actor);
 			
-			printjson(next_actor["name"]);
+			
 			//print(";");
 			
 
 			//probando: q no sea null
 			if(next_actor!=null)
 			{
+				printjson(next_actor["name"]);
 				print("y no es nulo");
-				print(next_actor["name"]);
+				//print(next_actor["name"]);
 			
 				printjson(visited.has(next_actor["name"]));
 
@@ -75,6 +76,13 @@ function bfs(graph, bacon){
 		//		print("queue");
 		//		printjson(queue);
 			}
+			else{
+				print("ya lo visitamos")
+
+
+			}
+
+
 			}/*else{
 				print("not visited");
 			}*/
