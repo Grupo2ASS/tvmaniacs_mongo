@@ -35,23 +35,36 @@ function bfs(graph, bacon){
 	visited.add(bacon["name"]);
 	while(queue.length > 0){
 		current_actor = queue.shift();
-		//print("current actor is: ");
-		//printjson(current_actor);
+		
+		print("current actor is: ");
+		printjson(current_actor["name"]);
+		
+		print("los visitados son:");
+		printjson(visited);
+		
 		var next_actor;
+		print("sus vecinos son: ");
 		for (var i = 0; i < current_actor["list"].length; i++) {
 			next_actor = graph.filter(function(o){
 				return o["name"]==current_actor["list"][i];
 			})[0];
 		//	print("next actor is: ");
 		//	printjson(next_actor);
+			
+			printjson(next_actor["name"]);
+			//print(";");
+			
 
 			//probando: q no sea null
 			if(next_actor!=null)
-			{	
-			//print(next_actor["name"]);
+			{
+				print("y no es nulo");
+				print(next_actor["name"]);
 			
+				printjson(visited.has(next_actor["name"]));
+
 			if(!visited.has(next_actor["name"])){
-			//	print("visited");
+				print("y no lo hemos visitado!");
 				visited.add(next_actor["name"]);
 				next_actor["degree"] = current_actor["degree"] + 1;
 				db.adjacency_lists.update( { "name": next_actor["name"] },
@@ -78,7 +91,7 @@ var db = conn.getDB("tvdb");
 var query = db.adjacency_lists.find();
 var graph = new Array();
 query.forEach(function(o){graph.push(o)});
-var bacon = graph.filter(function(x) { return x["name"]== "0000102"; })[0]; //0000102 es el imdb_id de Kevin Bacon 1 should be Kevin Bacon
+var bacon = graph.filter(function(x) { return x["name"]== "2179180"; })[0]; //0000102 es el imdb_id de Kevin Bacon 1 should be Kevin Bacon
 //printjson(bacon);
 bfs(graph, bacon);
 

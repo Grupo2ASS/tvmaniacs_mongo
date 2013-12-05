@@ -7,6 +7,6 @@ lists.forEach(function(l){
                    $set: { "bacon_number": l["degree"] }
                    
                  } )
-	print("se actualizo el actor "+l["name"]+" con bacon number "+l["degree"]);
+	//print("se actualizo el actor "+l["name"]+" con bacon number "+l["degree"]);
 
 });
